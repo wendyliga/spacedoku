@@ -3,3 +3,4 @@ dist/
 temp/
 *.local
 .DS_Store
+*.tsbuildinfo
