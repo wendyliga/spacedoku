@@ -6,12 +6,14 @@ import { gameReducer, newGameState, type GameState } from '../state/gameReducer'
 import { loadSettings, saveSettings, type Settings } from '../state/settings';
 import { clearSavedGame, loadSavedGame, saveGame } from '../state/storage';
 import { audio } from '../audio/audio';
+import SpaceBackdrop from './SpaceBackdrop';
 import StartScreen from './StartScreen';
 import GameScreen from './GameScreen';
 import SettingsModal from './SettingsModal';
 import WinScreen from './WinScreen';
+import CreditsScreen from './CreditsScreen';
 
-type Screen = 'start' | 'game';
+type Screen = 'start' | 'game' | 'credits';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('start');
@@ -131,13 +133,16 @@ export default function App() {
 
   return (
     <div className="app">
+      <SpaceBackdrop />
       {screen === 'start' && (
         <StartScreen
           onStart={startNewGame}
           onResume={resumeAvailable ? resumeGame : undefined}
           onOpenSettings={() => setSettingsOpen(true)}
+          onOpenCredits={() => setScreen('credits')}
         />
       )}
+      {screen === 'credits' && <CreditsScreen onBack={() => setScreen('start')} />}
       {screen === 'game' && (
         <GameScreen
           game={game}

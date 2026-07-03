@@ -1,5 +1,6 @@
 import type { Settings } from '../state/settings';
 import { audio } from '../audio/audio';
+import Icon from './Icon';
 
 interface Props {
   settings: Settings;
@@ -13,11 +14,12 @@ export default function SettingsModal({ settings, onChange, onClose }: Props) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Settings ⚙️</h2>
+        <h2>Control deck</h2>
 
         <div className="setting-row">
           <label className="setting-label" htmlFor="sfx-toggle">
-            🔔 Sound effects
+            <Icon name="speaker" size={18} />
+            Ship sounds
           </label>
           <input
             id="sfx-toggle"
@@ -49,7 +51,8 @@ export default function SettingsModal({ settings, onChange, onClose }: Props) {
 
         <div className="setting-row">
           <label className="setting-label" htmlFor="music-toggle">
-            🎵 Music
+            <Icon name="orbit" size={18} />
+            Cosmic ambience
           </label>
           <input
             id="music-toggle"
@@ -77,7 +80,8 @@ export default function SettingsModal({ settings, onChange, onClose }: Props) {
 
         <div className="setting-row">
           <label className="setting-label" htmlFor="errors-toggle">
-            🚨 Highlight mistakes
+            <Icon name="alert" size={18} />
+            Collision alerts
           </label>
           <input
             id="errors-toggle"
@@ -89,7 +93,7 @@ export default function SettingsModal({ settings, onChange, onClose }: Props) {
         </div>
 
         <button className="btn btn-close" onClick={onClose}>
-          Done
+          Back to ship
         </button>
       </div>
     </div>

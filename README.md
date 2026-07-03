@@ -1,7 +1,8 @@
-# Sudoku Pop! 🎉
+# Spacedoku
 
-A playful, fully client-side sudoku game. No server, no accounts, no tracking —
-just a static page you can host anywhere.
+A space-themed, fully client-side sudoku game — pixel-art nebula backdrop,
+animated sprites, interface-bleep sound effects, ambient cosmic soundtrack.
+No server, no accounts, no tracking — just a static page you can host anywhere.
 
 See [PLAN.md](./PLAN.md) for the full requirements, architecture, and progress log.
 
@@ -9,10 +10,20 @@ See [PLAN.md](./PLAN.md) for the full requirements, architecture, and progress l
 
 - **Customizable new game**: 4×4, 6×6, or 9×9 boards × Easy/Medium/Hard/Expert.
 - Every puzzle is generated on-device with a **guaranteed unique solution**.
-- **Hints** fill the selected cell (or the smartest next cell) when you're stuck.
-- Pencil-mark notes, undo, erase, mistake highlighting, timer, win confetti.
-- **Sound effects & background music**, synthesized live with the Web Audio API
-  (zero audio assets) — toggles and volume sliders in Settings.
+- **Telescope hints** fill the selected cell (or the smartest next cell) when you're stuck.
+- Pencil-mark notes (Scan), undo (Rewind), erase (Vaporize), collision alerts,
+  mission clock, and a stardust-shower win screen.
+- **Ship sounds** from a real interface-bleep sample library with per-action
+  variation, plus a **generative ambient soundtrack** (Web Audio API) — toggles
+  and volume sliders in the Control deck.
+- Pixel-art nebula, drifting planets, and animated astronaut/alien sprites.
+- Bundled Orbitron + Exo 2 fonts (OFL-licensed, served locally — no CDN calls).
+
+## Asset credits
+
+- Space Runner sprites — Matt Walkden (CC0)
+- Space background pack — ansimuz (CC0)
+- Interface bleeps — BLEEOOP sound library
 - Progress and settings persist in `localStorage`; an interrupted game can be resumed.
 - Keyboard play: arrows move, `1–9` fill, `Backspace` erases, `N` notes, `H` hint, `U`/`Ctrl+Z` undo.
 

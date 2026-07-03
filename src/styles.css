@@ -1,21 +1,41 @@
-/* ============================== theme ============================== */
+/* ============================ space theme =========================== */
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('./assets/orbitron.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Exo 2';
+  src: url('./assets/exo2.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 :root {
-  --bg1: #8ec5fc;
-  --bg2: #e0c3fc;
-  --card: #ffffff;
-  --ink: #3d2b6b;
-  --ink-soft: #7a6aa8;
-  --primary: #7c5cff;
-  --primary-dark: #5b3fe0;
-  --accent: #ff5d8f;
-  --sun: #ffd166;
-  --mint: #06d6a0;
-  --sky: #4cc9f0;
-  --error: #ff4d6d;
-  --radius: 22px;
-  --shadow: 0 10px 30px rgba(61, 43, 107, 0.18);
-  --font: 'Baloo 2', 'Comic Sans MS', ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif;
+  --space-deep: #05060f;
+  --space-navy: #0b1026;
+  --panel: rgba(17, 24, 58, 0.72);
+  /* Near-opaque surface for interactive controls so the busy nebula
+     backdrop never bleeds through buttons. */
+  --panel-strong: rgba(19, 26, 62, 0.94);
+  --panel-solid: #12183a;
+  --line: rgba(94, 242, 240, 0.22);
+  --ink: #e8ecff;
+  --ink-soft: #8b93c9;
+  --cyan: #5ef2f0;
+  --purple: #a06bff;
+  --magenta: #ff6ec7;
+  --gold: #ffd76e;
+  --error: #ff5470;
+  --radius: 20px;
+  --glow-cyan: 0 0 14px rgba(94, 242, 240, 0.45);
+  --glow-purple: 0 0 14px rgba(160, 107, 255, 0.5);
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.55);
+  --font-display: 'Orbitron', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Exo 2', 'Avenir Next', system-ui, sans-serif;
 }
 
 * {
@@ -31,9 +51,13 @@ body {
 }
 
 body {
-  font-family: var(--font);
+  font-family: var(--font-body);
   color: var(--ink);
-  background: linear-gradient(135deg, var(--bg1), var(--bg2) 60%, #ffd9e8);
+  background:
+    radial-gradient(ellipse 60% 40% at 75% 12%, rgba(160, 107, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 15% 80%, rgba(94, 242, 240, 0.1), transparent 70%),
+    radial-gradient(ellipse 45% 30% at 45% 45%, rgba(255, 110, 199, 0.07), transparent 70%),
+    linear-gradient(180deg, var(--space-deep), var(--space-navy) 55%, #0d0a24);
   background-attachment: fixed;
   min-height: 100vh;
   user-select: none;
@@ -56,11 +80,218 @@ button {
   cursor: pointer;
 }
 
+/* ------------------------- space backdrop --------------------------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Pixel-art nebula painting, scaled up chunky on purpose. */
+.nebula {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  image-rendering: pixelated;
+  opacity: 0.5;
+}
+
+.pixel {
+  image-rendering: pixelated;
+}
+
+.drift-planet-big {
+  position: absolute;
+  top: 9%;
+  right: 7%;
+  width: 129px;
+  animation: drift-bob 11s ease-in-out infinite;
+}
+
+.drift-planet-small {
+  position: absolute;
+  bottom: 14%;
+  left: 6%;
+  width: 48px;
+  animation: drift-bob 8s ease-in-out infinite reverse;
+}
+
+.drift-asteroid-1 {
+  position: absolute;
+  top: 24%;
+  left: -60px;
+  width: 64px;
+  animation: drift-across 70s linear infinite, drift-spin 13s linear infinite;
+}
+
+.drift-asteroid-2 {
+  position: absolute;
+  top: 68%;
+  left: -50px;
+  width: 42px;
+  animation: drift-across 100s linear infinite 22s, drift-spin 9s linear infinite reverse;
+}
+
+@keyframes drift-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes drift-across {
+  to {
+    left: 110%;
+  }
+}
+
+@keyframes drift-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  top: 12%;
+  left: -8%;
+  width: 110px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #fff);
+  transform: rotate(18deg);
+  opacity: 0;
+  animation: shoot 9s linear infinite;
+}
+
+.shooting-star:nth-child(2) {
+  top: 55%;
+  animation-delay: 4.5s;
+  animation-duration: 11s;
+}
+
+@keyframes shoot {
+  0%,
+  88% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(18deg);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(120vw, 38vw) rotate(18deg);
+  }
+}
+
+.start-screen,
+.game-screen {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------------------- sprites & icons -------------------------- */
+
+.sprite {
+  display: inline-block;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  animation-name: sprite-play;
+  animation-iteration-count: infinite;
+}
+
+@keyframes sprite-play {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: var(--sprite-travel);
+  }
+}
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.pixel-icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+/* ------------------------------ tooltips ---------------------------- */
+
+[data-tip] {
+  position: relative;
+}
+
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0a0f28;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  white-space: nowrap;
+  z-index: 30;
+  pointer-events: none;
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.15s ease;
+}
+
+/* HUD sits at the top edge, so its tooltips open downward instead. */
+.hud [data-tip]:hover::after,
+.hud [data-tip]:focus-visible::after {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+
 /* ============================ start screen ========================== */
 
 .start-screen {
-  width: min(440px, 100%);
-  padding: 32px 20px 40px;
+  width: min(540px, 100%);
+  /* Generous top padding: the bobbing title must never reach the
+     settings button pinned in the top-right corner. */
+  padding: 100px 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,54 +299,67 @@ button {
   position: relative;
 }
 
-.settings-corner {
+.menu-corner-actions {
   position: absolute;
   top: 16px;
   right: 16px;
+  display: flex;
+  gap: 10px;
 }
 
 .logo {
-  font-size: clamp(2.6rem, 9vw, 3.6rem);
-  margin: 28px 0 0;
-  letter-spacing: -1px;
-  text-shadow: 0 4px 0 rgba(61, 43, 107, 0.12);
-  animation: bob 3s ease-in-out infinite;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 7.5vw, 2.9rem);
+  margin: 0;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(94, 242, 240, 0.65), 0 0 50px rgba(94, 242, 240, 0.3);
+  animation: hover-drift 5s ease-in-out infinite;
+  text-align: center;
 }
 
 .logo-pop {
-  color: var(--accent);
+  color: var(--magenta);
+  text-shadow: 0 0 18px rgba(255, 110, 199, 0.7), 0 0 50px rgba(255, 110, 199, 0.35);
 }
 
-@keyframes bob {
+@keyframes hover-drift {
   0%,
   100% {
-    transform: translateY(0) rotate(-1.5deg);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px) rotate(1.5deg);
+    transform: translateY(-7px);
   }
 }
 
 .tagline {
-  margin: -6px 0 8px;
+  margin: -4px 0 8px;
   color: var(--ink-soft);
-  font-size: 1.05rem;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }
 
 .picker {
   width: 100%;
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 14px 16px 16px;
   box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
 }
 
 .picker h2 {
   margin: 0 0 10px;
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--ink-soft);
+  letter-spacing: 3px;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(94, 242, 240, 0.4);
 }
 
 .picker-row {
@@ -125,18 +369,18 @@ button {
 }
 
 .chip {
-  flex: 1 1 0;
-  min-width: 72px;
+  /* Grow from content size so long labels (Commander) never clip. */
+  flex: 1 1 auto;
+  min-width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
   padding: 10px 8px;
-  border-radius: 16px;
-  background: #fff;
-  border: 3px solid transparent;
-  box-shadow: 0 3px 0 rgba(61, 43, 107, 0.15);
-  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
   text-transform: capitalize;
 }
 
@@ -145,84 +389,248 @@ button {
 }
 
 .chip-active {
-  border-color: var(--primary);
-  background: #f1ecff;
+  border-color: var(--purple);
+  background: rgba(160, 107, 255, 0.16);
+  box-shadow: var(--glow-purple);
   transform: scale(1.04);
 }
 
 .chip-label {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
+  white-space: nowrap;
 }
 
 .chip-hint {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* Difficulty pips: 1-4 lit dots instead of an emoji. */
+.pips {
+  display: flex;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.pip-on {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 6px rgba(255, 215, 110, 0.7);
 }
 
 /* ============================== buttons ============================ */
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   border-radius: 999px;
-  font-weight: 800;
-  font-size: 1.2rem;
-  padding: 14px 44px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  box-shadow: 0 6px 0 var(--primary-dark), var(--shadow);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 44px;
+  color: var(--space-deep);
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  box-shadow: 0 0 22px rgba(94, 242, 240, 0.4), 0 0 40px rgba(160, 107, 255, 0.3), var(--shadow);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 var(--primary-dark);
+  transform: translateY(3px) scale(0.98);
+  box-shadow: 0 0 10px rgba(94, 242, 240, 0.3);
+}
+
+/* Resume + Launch grouped at the bottom of the start screen. */
+.start-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .btn-play {
-  font-size: 1.5rem;
-  padding: 16px 60px;
-  animation: pulse 2s ease-in-out infinite;
+  font-size: 1.25rem;
+  padding: 14px 54px;
+  animation: engine-pulse 2.2s ease-in-out infinite;
 }
 
-@keyframes pulse {
+/* Dark disc keeps the pixel astronaut readable on the bright button. */
+.launch-badge {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(5, 6, 15, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(94, 242, 240, 0.4);
+}
+
+@keyframes engine-pulse {
   0%,
   100% {
-    transform: scale(1);
+    box-shadow: 0 0 18px rgba(94, 242, 240, 0.35), 0 0 36px rgba(160, 107, 255, 0.25), var(--shadow);
   }
   50% {
-    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(94, 242, 240, 0.6), 0 0 60px rgba(160, 107, 255, 0.45), var(--shadow);
   }
 }
 
 .btn-resume {
-  background: linear-gradient(135deg, var(--mint), var(--sky));
-  box-shadow: 0 6px 0 #05a87e, var(--shadow);
-}
-
-.btn-resume:active {
-  box-shadow: 0 2px 0 #05a87e;
+  background: linear-gradient(135deg, var(--gold), var(--magenta));
+  box-shadow: 0 0 22px rgba(255, 215, 110, 0.4), var(--shadow);
 }
 
 .icon-btn {
-  font-size: 1.5rem;
-  width: 48px;
-  height: 48px;
+  color: var(--cyan);
+  min-width: 58px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 3px 0 rgba(61, 43, 107, 0.15);
-  transition: transform 0.1s ease;
-  display: grid;
-  place-items: center;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 7px 10px 5px;
+}
+
+.icon-btn-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
 }
 
 .icon-btn:active {
   transform: scale(0.9);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ============================ credits screen ======================== */
+
+.credits-screen {
+  width: min(760px, 100%);
+  padding: 48px 20px 42px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.credits-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(94, 242, 240, 0.65), 0 0 50px rgba(94, 242, 240, 0.3);
+}
+
+.credits-screen .tagline {
+  text-align: center;
+}
+
+.credit-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.credit-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.credit-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.credit-license {
+  flex: 0 0 auto;
+  border: 1px solid rgba(94, 242, 240, 0.35);
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--cyan);
+  background: rgba(94, 242, 240, 0.08);
+}
+
+.credit-author,
+.credit-used,
+.credit-terms,
+.credits-note {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.credit-link {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.credit-link:hover,
+.credit-link:focus-visible {
+  text-decoration: underline;
+}
+
+.credit-used {
+  margin-top: 8px;
+  color: var(--ink);
+}
+
+.credit-terms {
+  margin-top: 8px;
+}
+
+.credits-note {
+  text-align: center;
+}
+
+.credits-screen .btn-close {
+  align-self: center;
+  margin-top: 4px;
 }
 
 /* ============================ game screen =========================== */
 
 .game-screen {
-  width: min(520px, 100%);
+  /* One knob controls the board, toolbar, and numpad width together.
+     The calc term is the exact vertical budget: viewport minus the
+     hud, toolbar, numpad, gaps, and padding (~360px) that stack with
+     the board, so the numpad never falls below the fold. */
+  --board-w: min(94vw, 580px, max(300px, calc(100vh - 375px)));
+  width: min(660px, 100%);
   padding: 14px 12px 28px;
   display: flex;
   flex-direction: column;
@@ -247,14 +655,20 @@ button {
 }
 
 .hud-stat {
-  background: rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 12px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
   text-transform: capitalize;
-  box-shadow: 0 2px 0 rgba(61, 43, 107, 0.1);
   font-variant-numeric: tabular-nums;
+  color: var(--ink);
 }
 
 /* ------------------------------ board ------------------------------ */
@@ -262,12 +676,14 @@ button {
 .board {
   display: grid;
   grid-template-columns: repeat(var(--size), 1fr);
-  width: min(94vw, 460px, 58vh);
+  width: var(--board-w);
   aspect-ratio: 1;
-  background: var(--card);
+  background: rgba(13, 18, 46, 0.92);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 8px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0 30px rgba(94, 242, 240, 0.12), var(--shadow);
+  backdrop-filter: blur(8px);
   gap: 2px;
 }
 
@@ -275,63 +691,77 @@ button {
   position: relative;
   display: grid;
   place-items: center;
-  background: #f4f1fd;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 7px;
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: calc(1.5rem * (9 / var(--size)) * 0.62);
-  color: var(--primary-dark);
-  transition: background 0.1s ease, transform 0.1s ease;
+  /* Digits scale with the actual cell size, whatever the board dimensions. */
+  font-size: calc(var(--board-w) / var(--size) * 0.42);
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(94, 242, 240, 0.5);
+  transition: background 0.1s ease, transform 0.1s ease, box-shadow 0.1s ease;
   padding: 0;
   min-width: 0;
   min-height: 0;
 }
 
 .cell-given {
-  background: #e6e0f8;
-  color: var(--ink);
+  background: rgba(160, 107, 255, 0.14);
+  color: #cdd5ff;
+  text-shadow: none;
 }
 
 .cell-related {
-  background: #dcedff;
+  background: rgba(94, 242, 240, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(94, 242, 240, 0.22);
 }
 
 .cell-same {
-  background: #ffe3ee;
-  color: var(--accent);
+  background: rgba(255, 110, 199, 0.16);
+  color: var(--magenta);
+  text-shadow: 0 0 8px rgba(255, 110, 199, 0.55);
 }
 
 .cell-selected {
-  background: var(--sun) !important;
-  color: var(--ink);
+  background: rgba(255, 215, 110, 0.2) !important;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 215, 110, 0.6);
   transform: scale(1.06);
   z-index: 1;
-  box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.55);
+  box-shadow: 0 0 0 2px var(--gold), 0 0 16px rgba(255, 215, 110, 0.5);
 }
 
 .cell-error .cell-value {
   color: var(--error);
+  text-shadow: 0 0 10px rgba(255, 84, 112, 0.7);
   animation: shake 0.3s ease;
 }
 
 .cell-hinted::after {
-  content: '💡';
+  content: '';
   position: absolute;
-  top: 1px;
+  top: 2px;
   right: 2px;
-  font-size: 0.5em;
+  width: 12px;
+  height: 12px;
+  background: url('./assets/sprites/Diamond.png') no-repeat center / contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px rgba(255, 110, 199, 0.8));
 }
 
 .cell-pop .cell-value {
-  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: warpIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-block;
 }
 
-@keyframes popIn {
+@keyframes warpIn {
   0% {
-    transform: scale(0.2);
+    transform: scale(0.1) rotate(-90deg);
+    filter: blur(2px);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0);
+    filter: blur(0);
   }
 }
 
@@ -366,6 +796,7 @@ button {
 
 .cell-notes i {
   font-style: normal;
+  font-family: var(--font-body);
   font-size: 0.34em;
   line-height: 1;
   color: var(--ink-soft);
@@ -378,7 +809,7 @@ button {
 .toolbar {
   display: flex;
   gap: 10px;
-  width: min(94vw, 460px);
+  width: var(--board-w);
 }
 
 .tool {
@@ -387,39 +818,76 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 16px;
+  background: var(--panel-strong);
+  border: 1px solid rgba(94, 242, 240, 0.3);
+  border-radius: 14px;
   padding: 8px 4px;
-  box-shadow: 0 3px 0 rgba(61, 43, 107, 0.12);
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .tool:active:not(:disabled) {
   transform: scale(0.93);
 }
 
+/* Disabled tools keep a solid body; only their content dims. */
 .tool:disabled {
-  opacity: 0.45;
   cursor: default;
+  background: rgba(14, 19, 44, 0.94);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tool:disabled .tool-label {
+  color: rgba(139, 147, 201, 0.5);
 }
 
 .tool-active {
-  background: #f1ecff;
-  box-shadow: inset 0 0 0 3px var(--primary), 0 3px 0 rgba(61, 43, 107, 0.12);
+  border-color: var(--purple);
+  box-shadow: var(--glow-purple);
+  background: rgba(63, 47, 110, 0.94);
 }
 
 .tool-hint {
-  background: linear-gradient(135deg, #fff3c9, #ffe08a);
+  border-color: rgba(255, 215, 110, 0.55);
+  background: rgba(56, 48, 26, 0.94);
 }
 
 .tool-icon {
-  font-size: 1.3rem;
+  color: var(--cyan);
+}
+
+.tool:disabled .tool-icon {
+  color: rgba(139, 147, 201, 0.5);
+}
+
+.tool-hint .tool-icon {
+  color: var(--gold);
+}
+
+/* Fixed-height slot so mixed icon sizes align across the toolbar. */
+.tool-icon-box {
+  height: 32px;
+  display: grid;
+  place-items: center;
 }
 
 .tool-label {
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+}
+
+/* Plain-language function under the themed tool name. */
+.tool-sub {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   color: var(--ink-soft);
+}
+
+.tool:disabled .tool-sub {
+  color: rgba(139, 147, 201, 0.5);
 }
 
 /* ---------------------------- number pad --------------------------- */
@@ -428,42 +896,55 @@ button {
   display: grid;
   grid-template-columns: repeat(min(var(--size), 9), minmax(0, 1fr));
   gap: 6px;
-  width: min(94vw, 460px);
+  width: var(--board-w);
 }
 
 .numpad-key {
   aspect-ratio: 4 / 5;
   min-width: 0;
   padding: 0;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 4px 0 rgba(61, 43, 107, 0.18);
+  border-radius: 12px;
+  background: var(--panel-strong);
+  border: 1px solid rgba(94, 242, 240, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .numpad-key:active:not(:disabled) {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 rgba(61, 43, 107, 0.18);
+  transform: translateY(2px);
+  box-shadow: var(--glow-cyan);
 }
 
+/* Completed digits keep a solid body; only their content dims. */
 .numpad-done {
-  opacity: 0.4;
   cursor: default;
+  background: rgba(14, 19, 44, 0.94);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.numpad-done .numpad-digit {
+  color: rgba(139, 147, 201, 0.5);
+  text-shadow: none;
+}
+
+.numpad-done .numpad-left {
+  color: rgba(139, 147, 201, 0.5);
 }
 
 .numpad-digit {
-  font-size: clamp(1rem, 5.5vw, 1.4rem);
-  font-weight: 800;
-  color: var(--primary-dark);
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 5vw, 1.3rem);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(94, 242, 240, 0.5);
 }
 
 .numpad-left {
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.64rem;
+  font-weight: 600;
   color: var(--ink-soft);
 }
 
@@ -472,8 +953,8 @@ button {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(61, 43, 107, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(3, 4, 12, 0.72);
+  backdrop-filter: blur(5px);
   display: grid;
   place-items: center;
   z-index: 10;
@@ -487,11 +968,12 @@ button {
 }
 
 .modal {
-  width: min(380px, calc(100vw - 32px));
-  background: var(--card);
+  width: min(390px, calc(100vw - 32px));
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 22px 24px 24px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0 40px rgba(94, 242, 240, 0.15), var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -508,6 +990,12 @@ button {
 .modal h2 {
   margin: 0 0 4px;
   text-align: center;
+  font-family: var(--font-display);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  color: var(--cyan);
+  text-shadow: 0 0 12px rgba(94, 242, 240, 0.5);
 }
 
 .setting-row {
@@ -518,13 +1006,21 @@ button {
 }
 
 .setting-label {
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.setting-label .icon {
+  color: var(--cyan);
 }
 
 input[type='range'] {
   flex: 1;
   max-width: 180px;
-  accent-color: var(--primary);
+  accent-color: var(--cyan);
   height: 6px;
 }
 
@@ -533,10 +1029,10 @@ input[type='range'] {
   width: 52px;
   height: 30px;
   border-radius: 999px;
-  background: #d8d2ea;
+  background: rgba(255, 255, 255, 0.14);
   position: relative;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
   flex-shrink: 0;
 }
 
@@ -549,12 +1045,13 @@ input[type='range'] {
   height: 24px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: left 0.15s ease;
 }
 
 .switch:checked {
-  background: var(--mint);
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(94, 242, 240, 0.55);
 }
 
 .switch:checked::after {
@@ -564,8 +1061,8 @@ input[type='range'] {
 .btn-close {
   margin-top: 6px;
   align-self: center;
-  font-size: 1rem;
-  padding: 10px 36px;
+  font-size: 0.9rem;
+  padding: 11px 36px;
 }
 
 /* ---------------------------- win screen --------------------------- */
@@ -579,9 +1076,24 @@ input[type='range'] {
   align-items: center;
 }
 
+/* Celebration scene: jumping astronaut + dancing alien + sparkles. */
+.win-scene {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 12px rgba(94, 242, 240, 0.3));
+}
+
 .win-title {
-  font-size: 2rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   margin: 0;
+  color: var(--gold);
+  text-shadow: 0 0 16px rgba(255, 215, 110, 0.6);
 }
 
 .win-sub {
@@ -597,25 +1109,36 @@ input[type='range'] {
 }
 
 .win-stat {
-  background: #f4f1fd;
+  flex: 1 1 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 10px 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
+/* Icon + number on one centered row, whatever the icon type. */
 .win-stat-value {
-  font-weight: 800;
-  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
   font-variant-numeric: tabular-nums;
 }
 
 .win-stat-label {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   color: var(--ink-soft);
+  text-align: center;
 }
 
 .confetti-layer {
@@ -627,24 +1150,82 @@ input[type='range'] {
 .confetti {
   position: absolute;
   top: -20px;
-  border-radius: 2px;
-  animation: confettiFall linear infinite;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+  animation: stardustFall linear infinite;
 }
 
-@keyframes confettiFall {
+@keyframes stardustFall {
   to {
     transform: translateY(110vh) rotate(calc(720deg * var(--spin)));
   }
 }
 
+/* ---------------------------- wide screens ------------------------- */
+/* On wide desktop windows the vertical stack (hud/board/tools/numpad)
+   can outgrow the viewport and clip the number pad below the fold.
+   Move the tools + number pad into a side panel next to the board, and
+   let the board use the freed vertical space. */
+
+@media (min-width: 1100px) {
+  .game-screen {
+    /* Side panel holds the tools, so only the hud (~150px) stacks
+       above/below the board. */
+    --board-w: min(max(300px, calc(100vh - 150px)), 640px);
+    width: auto;
+    display: grid;
+    grid-template-columns: var(--board-w) 300px;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      'hud hud'
+      'board tools'
+      'board pad';
+    gap: 16px 22px;
+    align-items: start;
+    justify-items: stretch;
+  }
+
+  .hud {
+    grid-area: hud;
+  }
+
+  .board {
+    grid-area: board;
+  }
+
+  .toolbar {
+    grid-area: tools;
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .numpad {
+    grid-area: pad;
+    width: auto;
+    align-content: start;
+    /* 3 keys per row in the side panel (2 for the 4x4 board). */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(min(calc(var(--size) - 2), 3), minmax(0, 1fr));
+  }
+
+  .numpad-key {
+    aspect-ratio: auto;
+    padding: 12px 0;
+  }
+}
+
 /* --------------------------- small screens ------------------------- */
+
+@media (max-width: 520px) {
+  .chip-rank {
+    min-width: 40%;
+  }
+}
+
 
 @media (max-height: 700px) {
   .game-screen {
     gap: 10px;
-  }
-
-  .board {
-    width: min(94vw, 50vh);
   }
 }
