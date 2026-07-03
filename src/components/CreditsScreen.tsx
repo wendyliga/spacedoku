@@ -1,4 +1,6 @@
 import { audio } from '../audio/audio';
+import PixelIcon from './PixelIcon';
+import planetUrl from '../assets/bg/prop-planet-small.png';
 
 interface Props {
   onBack: () => void;
@@ -46,6 +48,16 @@ const PACKS: Pack[] = [
 export default function CreditsScreen({ onBack }: Props) {
   return (
     <div className="credits-screen">
+      <div className="credits-corner-back">
+        <button
+          className="icon-btn"
+          onClick={() => { audio.play('click'); onBack(); }}
+          aria-label="Back to menu"
+        >
+          <PixelIcon src={planetUrl} w={16} h={16} scale={2} />
+          <span className="icon-btn-label">Menu</span>
+        </button>
+      </div>
       <h1 className="credits-title">Credits</h1>
       <p className="tagline">Spacedoku is built on these wonderful asset packs.</p>
 
@@ -76,9 +88,6 @@ export default function CreditsScreen({ onBack }: Props) {
         Fonts: Orbitron and Exo 2, both under the SIL Open Font License, bundled locally.
       </p>
 
-      <button className="btn btn-close" onClick={onBack}>
-        Back to menu
-      </button>
     </div>
   );
 }
