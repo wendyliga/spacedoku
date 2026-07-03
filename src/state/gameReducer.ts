@@ -148,7 +148,14 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       ];
       cells[cell] = 0;
       notes[cell] = 0;
-      return { ...state, cells, notes, history, lastEvent: event('erase', cell) };
+      return {
+        ...state,
+        cells,
+        notes,
+        history,
+        hintedCells: state.hintedCells.filter((c) => c !== cell),
+        lastEvent: event('erase', cell),
+      };
     }
 
     case 'undo': {
@@ -158,11 +165,18 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const notes = state.notes.slice();
       cells[entry.cell] = entry.prevValue;
       notes[entry.cell] = entry.prevNotes;
+      // If we're undoing a hint (or an input on top of a hinted cell), the
+      // diamond marker no longer applies once the value is rolled back.
+      const hintedCells =
+        cells[entry.cell] === state.puzzle.solution[entry.cell]
+          ? state.hintedCells
+          : state.hintedCells.filter((c) => c !== entry.cell);
       return {
         ...state,
         cells,
         notes,
         history: state.history.slice(0, -1),
+        hintedCells,
         selected: entry.cell,
         lastEvent: event('undo', entry.cell),
       };
