@@ -13,6 +13,9 @@ interface Props {
   onResume?: () => void;
   onOpenSettings: () => void;
   onOpenCredits: () => void;
+  initialSize: SizeKey;
+  initialDifficulty: Difficulty;
+  onSelectionChange: (size: SizeKey, difficulty: Difficulty) => void;
 }
 
 const SIZE_OPTIONS: { key: SizeKey; label: string; hint: string }[] = [
@@ -36,9 +39,17 @@ const DIFFICULTY_PIPS: Record<Difficulty, number> = {
   expert: 4,
 };
 
-export default function StartScreen({ onStart, onResume, onOpenSettings, onOpenCredits }: Props) {
-  const [size, setSize] = useState<SizeKey>('9');
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+export default function StartScreen({
+  onStart,
+  onResume,
+  onOpenSettings,
+  onOpenCredits,
+  initialSize,
+  initialDifficulty,
+  onSelectionChange,
+}: Props) {
+  const [size, setSize] = useState<SizeKey>(initialSize);
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
 
   return (
     <div className="start-screen">
@@ -68,6 +79,7 @@ export default function StartScreen({ onStart, onResume, onOpenSettings, onOpenC
               onClick={() => {
                 audio.play('click');
                 setSize(o.key);
+                onSelectionChange(o.key, difficulty);
               }}
             >
               <span className="chip-label">{o.label}</span>
@@ -87,6 +99,7 @@ export default function StartScreen({ onStart, onResume, onOpenSettings, onOpenC
               onClick={() => {
                 audio.play('click');
                 setDifficulty(d);
+                onSelectionChange(size, d);
               }}
             >
               <span className="chip-label">{DIFFICULTY_LABELS[d]}</span>

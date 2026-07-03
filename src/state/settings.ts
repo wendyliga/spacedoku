@@ -1,9 +1,15 @@
+import type { Difficulty, SizeKey } from '../core/types';
+
 export interface Settings {
   sfxEnabled: boolean;
   sfxVolume: number; // 0..1
   musicEnabled: boolean;
   musicVolume: number; // 0..1
   showErrors: boolean;
+  /** Last board size the player picked on the start screen. */
+  lastSize: SizeKey;
+  /** Last difficulty the player picked on the start screen. */
+  lastDifficulty: Difficulty;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -12,6 +18,8 @@ export const DEFAULT_SETTINGS: Settings = {
   musicEnabled: true,
   musicVolume: 0.35,
   showErrors: true,
+  lastSize: '9',
+  lastDifficulty: 'easy',
 };
 
 const KEY = 'sudoku-pop.settings.v1';

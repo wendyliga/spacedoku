@@ -141,6 +141,11 @@ export default function App() {
           onResume={resumeAvailable ? resumeGame : undefined}
           onOpenSettings={() => setSettingsOpen(true)}
           onOpenCredits={() => setScreen('credits')}
+          initialSize={settings.lastSize}
+          initialDifficulty={settings.lastDifficulty}
+          onSelectionChange={(lastSize, lastDifficulty) =>
+            setSettings((s) => ({ ...s, lastSize, lastDifficulty }))
+          }
         />
       )}
       {screen === 'credits' && <CreditsScreen onBack={() => setScreen('start')} />}
