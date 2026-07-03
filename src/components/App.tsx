@@ -6,6 +6,7 @@ import { gameReducer, newGameState, type GameState } from '../state/gameReducer'
 import { loadSettings, saveSettings, type Settings } from '../state/settings';
 import { clearSavedGame, loadSavedGame, saveGame } from '../state/storage';
 import { audio } from '../audio/audio';
+import { buildHref, buildVersion } from '../core/buildInfo';
 import SpaceBackdrop from './SpaceBackdrop';
 import StartScreen from './StartScreen';
 import GameScreen from './GameScreen';
@@ -162,6 +163,17 @@ export default function App() {
           onClose={() => setSettingsOpen(false)}
         />
       )}
+      <footer className="site-footer">
+        <a
+          className="footer-link"
+          href={buildHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Build</span>
+          <span className="footer-build-pill">{buildVersion}</span>
+        </a>
+      </footer>
     </div>
   );
 }
