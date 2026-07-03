@@ -4,7 +4,6 @@ A space-themed, fully client-side sudoku game — pixel-art nebula backdrop,
 animated sprites, interface-bleep sound effects, ambient cosmic soundtrack.
 No server, no accounts, no tracking — just a static page you can host anywhere.
 
-See [PLAN.md](./PLAN.md) for the full requirements, architecture, and progress log.
 
 ## Features
 
@@ -24,7 +23,7 @@ See [PLAN.md](./PLAN.md) for the full requirements, architecture, and progress l
 - Space Runner sprites — Matt Walkden (CC0)
 - Space background pack — ansimuz (CC0)
 - Interface bleeps — BLEEOOP sound library
-- Progress and settings persist in `localStorage`; an interrupted game can be resumed.
+- Progress and settings persist in `localStorage` — an interrupted game can be resumed.
 - Keyboard play: arrows move, `1–9` fill, `Backspace` erases, `N` notes, `H` hint, `U`/`Ctrl+Z` undo.
 
 ## Development
