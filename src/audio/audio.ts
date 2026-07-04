@@ -4,7 +4,7 @@
 // Music: generative ambient deep-space soundtrack synthesized live — the game
 // still ships no music files and works fully offline.
 
-export type SfxName = 'select' | 'place' | 'error' | 'erase' | 'note' | 'hint' | 'undo' | 'win' | 'click';
+export type SfxName = 'place' | 'error' | 'erase' | 'note' | 'hint' | 'undo' | 'win' | 'click';
 
 // Vite inlines this glob into hashed asset URLs at build time.
 const SFX_URLS = import.meta.glob('../assets/sfx/*.wav', {
@@ -21,7 +21,6 @@ function urlFor(stem: string): string | undefined {
 /** Sample pools per action; one is picked at random each play for variety. */
 const SFX_VARIANTS: Record<SfxName, string[]> = {
   click: ['Click_01', 'Click_02', 'Click_03', 'Click_04'],
-  select: ['Bleep_01', 'Bleep_02', 'Bleep_03'],
   place: ['Confirm_01', 'Confirm_02', 'Confirm_03', 'Confirm_04'],
   note: ['Data_Point_01', 'Data_Point_02', 'Data_Point_04'],
   erase: ['Data_Point_05'],
@@ -34,7 +33,6 @@ const SFX_VARIANTS: Record<SfxName, string[]> = {
 /** Per-action playback tweaks: pitch (rate) and gain trim. */
 const SFX_TUNING: Partial<Record<SfxName, { rate?: number; gain?: number }>> = {
   erase: { rate: 0.8, gain: 0.9 }, // pitched-down data point reads as "vaporize"
-  select: { gain: 0.55 },
   note: { gain: 0.7 },
   error: { gain: 0.9 },
 };
