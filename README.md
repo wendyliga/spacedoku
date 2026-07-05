@@ -42,6 +42,15 @@ npm run build
 
 Upload the `dist/` folder to any static host (GitHub Pages, Netlify, Cloudflare
 Pages, S3, nginx…). Asset paths are relative, so it works from any subdirectory.
+For clean link previews on iMessage, WhatsApp, X, Discord, and similar crawlers,
+set `VITE_SITE_URL` to the public site root before building:
+
+```bash
+VITE_SITE_URL=https://spacedoku.wendyliga.com/ npm run build
+```
+
+Cloudflare Pages can also use its `CF_PAGES_URL` automatically, but the checked-in
+fallback is the production domain: `https://spacedoku.wendyliga.com/`.
 
 ## Stack
 
